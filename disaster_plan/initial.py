@@ -20,7 +20,7 @@ def choose_next_target(G_sim, current_node, shelters, served):
     ShinkaEvolve will mutate this.
     """
     best = None
-    best_dist = 999999
+    best_dist = float('inf')
     for s in shelters:
         if s not in served:
             d = nx.shortest_path_length(G_sim, current_node, s)
