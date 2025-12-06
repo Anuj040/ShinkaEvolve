@@ -21,9 +21,11 @@ def choose_next_target(G_sim, current_node, shelters, served):
     """
     best = None
     best_dist = float('inf')
+    all_distances = nx.single_source_shortest_path_length(G_sim, current_node)
     for s in shelters:
         if s not in served:
-            d = nx.shortest_path_length(G_sim, current_node, s)
+            # Look up the distance. If a shelter is unreachable, its distance will be 'inf'.
+            d = all_distances.get(s, float('inf'))
             if d < best_dist:
                 best_dist = d
                 best = s
