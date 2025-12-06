@@ -1,10 +1,10 @@
 import random
 import networkx as nx
 from typing import Callable
-
 def block_random_edges(G:nx.MultiDiGraph, p:float=0.02) -> nx.MultiDiGraph:
     """Randomly mark p% of edges as blocked."""
     G_sim = G.copy()
+    random.seed(42) # for reproducibility
     for u, v, k in G_sim.edges(keys=True):
         G_sim.edges[u, v, k]["blocked"] = random.random() < p
     return G_sim
@@ -36,6 +36,7 @@ def run_scenario(G, depot, shelter_nodes, choose_next_target_fn: Callable) -> fl
 
         # Pick next target (this is where evolution kicks in)
         target = choose_next_target_fn(
+            G_sim=G,
             current_node=current,
             shelters=shelter_nodes,
             served=served
@@ -63,6 +64,5 @@ def run_scenario(G, depot, shelter_nodes, choose_next_target_fn: Callable) -> fl
             served.add(current)
 
     unmet = len(shelter_nodes) - len(served)
-    print(total_steps, unmet, hazard_pen)
 
     return -total_steps - 20 * unmet - hazard_pen

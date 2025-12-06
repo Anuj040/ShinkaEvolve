@@ -13,7 +13,7 @@ DEPOT = bundle["depot_node"]
 # ===============================
 
 # EVOLVE-BLOCK-START
-def choose_next_target(current_node, shelters, served):
+def choose_next_target(G_sim, current_node, shelters, served):
     """
     Baseline heuristic:
     Move to the closest unserved shelter by shortest path length.
@@ -23,7 +23,7 @@ def choose_next_target(current_node, shelters, served):
     best_dist = 999999
     for s in shelters:
         if s not in served:
-            d = nx.shortest_path_length(G, current_node, s)
+            d = nx.shortest_path_length(G_sim, current_node, s)
             if d < best_dist:
                 best_dist = d
                 best = s
